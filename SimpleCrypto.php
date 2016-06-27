@@ -9,6 +9,10 @@ class SimpleCrypto {
         $this->vTable($k);
     }
     
+    public function setTable($t) {
+        $this->defTable = $t;
+    }
+    
     private function cleanText($t) {
         $return = null;
         foreach ( str_split($t) as $k => $v ) {
