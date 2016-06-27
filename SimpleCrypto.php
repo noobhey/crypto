@@ -5,7 +5,7 @@ class SimpleCrypto {
     private $defTable = "abcdefghijklmnopqrstuvwxyz1234567890!?.,_#$ @-*/";
     
     public function setKey($k) {
-        $this->key = $k;
+        $hex = null;
         foreach ( str_split($k) as $k => $v ) $hex .= dechex(ord($v));
         $this->key = $hex;
         $this->vTable();
