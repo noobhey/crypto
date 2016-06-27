@@ -6,7 +6,9 @@ class SimpleCrypto {
     
     public function setKey($k) {
         $this->key = $k;
-        $this->vTable($k);
+        foreach ( str_split($k) as $k => $v ) $hex .= dechex(ord($v));
+        $this->key = $hex;
+        $this->vTable();
     }
     
     public function setTable($t) {
@@ -49,7 +51,7 @@ class SimpleCrypto {
         return $return;
     }
     
-    private function vTable($key) {
+    private function vTable() {
         $seq = str_split($this->defTable);
         $table = [];        
         foreach ( str_split($this->key) as $k => $v ) {
