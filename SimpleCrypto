@@ -1,0 +1,51 @@
+class SimpleCrypto {
+    
+    public function setKey($k) {
+        $this->key = $k;
+        $this->vTable($k);
+    }
+    
+    private function encrypt($t) {        
+        $defTable = str_split($this->defTable);
+        $msg = str_split(strtolower($t));
+        $count = 0;
+        $return = null;
+        for ( $x = 0; $x < count($msg); $x++ ) {
+            $count %= strlen($this->key);
+            $index = array_search($msg[$x], $defTable);
+            $return .= $this->table[$count][$index];
+            $count++;
+        }        
+        return $return;
+    }    
+    
+    private function decrypt($t) {
+        $defTable = str_split($this->defTable);
+        $msg = str_split(strtolower($t));
+        $count = 0;
+        $return = null;
+        for ( $x=0; $x < count($msg); $x++ ) {
+            $count %= strlen($this->key);
+            $index = array_search($msg[$x], $this->table[$count]);
+            $return .= $defTable[$index];
+            $count++;
+        }
+        return $return;
+    }
+    
+    private function vTable($key) {
+        $seq = str_split($this->defTable);
+        $table = [];        
+        foreach ( str_split($this->key) as $k => $v ) {
+            $index = array_search($v, $seq);            
+            $temp = [];            
+            for ($x = 0; $x < count($seq); $x++) {                
+                $index %= count($seq);
+                array_push($temp, $seq[$index]);                
+                $index++;
+            }
+            array_push($table, $temp);
+        }
+        $this->table = $table;
+    }
+}
