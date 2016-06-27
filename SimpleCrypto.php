@@ -1,29 +1,22 @@
 class SimpleCrypto {
 
-    private $table;
-    private $key;
-    private $defTable = "abcdefghijklmnopqrstuvwxyz1234567890!?.,_#$ @-*/";
+    private $table = [];
+    private $defTable = null;
+    private $key = null;
     
     public function setKey($k) {
-        $hex = null;
-        foreach ( str_split($k) as $k => $v ) $hex .= dechex(ord($v));
-        $this->key = $hex;
+        if ( !ctype_alpha($k) ) return false;
+        foreach ( str_split($k) as $k => $v ) $this->key .= dechex(ord($v));
         $this->vTable();
-    }
-    
-    public function setTable($t) {
-        $this->defTable = $t;
     }
     
     private function cleanText($t) {
         $return = null;
-        foreach ( str_split($t) as $k => $v ) {
-            $return .= ( stripos($this->defTable, $v) !== false ? $v : null );
-        }
+        foreach ( str_split($t) as $k => $v ) $return .= ( stripos($this->defTable, $v) !== false ? $v : null );
         return $return;
     }
     
-    public function encrypt($t) {        
+    private function encrypt($t) {
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
@@ -37,7 +30,7 @@ class SimpleCrypto {
         return $return;
     }    
     
-    public function decrypt($t) {
+    private function decrypt($t) {
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
@@ -51,9 +44,11 @@ class SimpleCrypto {
         return $return;
     }
     
-    private function vTable() {
+    private function vTable() {       
+        foreach ( [[97, 122], [48, 57], [32, 47], [58, 64]] as $c ) {
+            for ( $x=$c[0]; $x <= $c[1]; $x++ ) $this->defTable .= chr($x);
+        }
         $seq = str_split($this->defTable);
-        $table = [];        
         foreach ( str_split($this->key) as $k => $v ) {
             $index = array_search($v, $seq);            
             $temp = [];            
@@ -62,8 +57,7 @@ class SimpleCrypto {
                 array_push($temp, $seq[$index]);                
                 $index++;
             }
-            array_push($table, $temp);
+            array_push($this->table, $temp);
         }
-        $this->table = $table;
     }
 }
