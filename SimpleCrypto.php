@@ -9,9 +9,17 @@ class SimpleCrypto {
         $this->vTable($k);
     }
     
+    private function cleanText($t) {
+        $return = null;
+        foreach ( str_split($t) as $k => $v ) {
+            $return .= ( stripos($this->defTable, $v) !== false ? $v : null );
+        }
+        return $return;
+    }
+    
     public function encrypt($t) {        
         $defTable = str_split($this->defTable);
-        $msg = str_split(strtolower($t));
+        $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
         $return = null;
         for ( $x = 0; $x < count($msg); $x++ ) {
@@ -25,7 +33,7 @@ class SimpleCrypto {
     
     public function decrypt($t) {
         $defTable = str_split($this->defTable);
-        $msg = str_split(strtolower($t));
+        $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
         $return = null;
         for ( $x=0; $x < count($msg); $x++ ) {
