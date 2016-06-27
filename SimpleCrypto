@@ -1,11 +1,15 @@
 class SimpleCrypto {
+
+    private $table;
+    private $key;
+    private $defTable = "abcdefghijklmnopqrstuvwxyz1234567890!?.,_#$ @-*/";
     
     public function setKey($k) {
         $this->key = $k;
         $this->vTable($k);
     }
     
-    private function encrypt($t) {        
+    public function encrypt($t) {        
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($t));
         $count = 0;
@@ -19,7 +23,7 @@ class SimpleCrypto {
         return $return;
     }    
     
-    private function decrypt($t) {
+    public function decrypt($t) {
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($t));
         $count = 0;
