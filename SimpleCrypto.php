@@ -23,8 +23,7 @@ class SimpleCrypto {
         $return = null;
         for ( $x = 0; $x < count($msg); $x++ ) {
             $count %= strlen($this->key);
-            $index = array_search($msg[$x], $defTable);
-            $return .= $this->table[$count][$index];
+            $return .= $this->table[$count][array_search($msg[$x], $defTable)];
             $count++;
         }        
         return $return;
@@ -37,8 +36,7 @@ class SimpleCrypto {
         $return = null;
         for ( $x=0; $x < count($msg); $x++ ) {
             $count %= strlen($this->key);
-            $index = array_search($msg[$x], $this->table[$count]);
-            $return .= $defTable[$index];
+            $return .= $defTable[array_search($msg[$x], $this->table[$count])];
             $count++;
         }
         return $return;
