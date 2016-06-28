@@ -25,36 +25,32 @@ class SimpleCrypto {
     }
     
     //
-    //  Encryption process
+    //  Encryption and decryption process
     //
-    private function encrypt($t) {
+    private function encrypt($t, $reverse = false) {
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
         $return = null;
         for ( $x = 0; $x < count($msg); $x++ ) {
             $count %= strlen($this->key);
-            $return .= $this->table[$count][array_search($msg[$x], $defTable)];
-            $count++;
-        }        
-        return $return;
-    }    
-    
-    //
-    //  Decryption process
-    //
-    private function decrypt($t) {
+            private function encrypt($t, $reverse = false) {
         $defTable = str_split($this->defTable);
         $msg = str_split(strtolower($this->cleanText($t)));
         $count = 0;
         $return = null;
-        for ( $x=0; $x < count($msg); $x++ ) {
+        for ( $x = 0; $x < count($msg); $x++ ) {
             $count %= strlen($this->key);
-            $return .= $defTable[array_search($msg[$x], $this->table[$count])];
+            //$index = array_search($msg[$x], $defTable);
+            $return .= ( !$reverse ? $this->table[$count][array_search($msg[$x], $defTable)] : $defTable[array_search($msg[$x], $this->table[$count])] );
             $count++;
-        }
+        }        
         return $return;
     }
+            $count++;
+        }        
+        return $return;
+    }    
     
     //
     //  Vigenere table creation process
